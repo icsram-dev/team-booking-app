@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                       String          @id @default(cuid())
+  name                     String
+  phoneNumber              String
+  email                    String          @unique
+  password                 String
+  isAdmin                  Boolean         @default(false)
+  isSubscribedToNewsletter Boolean         @default(false)
+  myAccommodations         Accommodation[] @relation("UserAccommodations")
+  favourites               Accommodation[] @relation("FavouriteAccommodations")
+  bookings                 Booking[]
+  createdAt                DateTime        @default(now())
+  updatedAt                DateTime        @updatedAt
+  isDeleted                Boolean         @default(false)
+}
+
+model Accommodation {
+  id          String    @id @default(cuid())
+  name        String
+  location    String
+  type        String
+  description String
+  price       Decimal
+  services    String[]
+  photos      String[]
+  owner       User      @relation("UserAccommodations", fields: [ownerId], references: [id])
+  ownerId     String
+  favourites  User[]    @relation("FavouriteAccommodations")
+  bookings    Booking[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  isVisible   Boolean   @default(false)
+}
+
+model Booking {
+  id              String        @id @default(cuid())
+  user            User          @relation(fields: [userId], references: [id])
+  userId          String
+  accommodation   Accommodation @relation(fields: [accommodationId], references: [id])
+  accommodationId String
+  startDate       DateTime
+  endDate         DateTime
+  totalPrice      Decimal
+  numberOfGuests  Int
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}

@@ -1,0 +1,3 @@
+export const CLOUDINARY_NAME=import.meta.env.VITE_CLOUDINARY_NAME || "dbt2kvh0o"
+export const CLOUDINARY_API_KEY=import.meta.env.VITE_CLOUDINARY_API_KEY || "885873488861693"
+export const CLOUDINARY_API_SECRET=import.meta.env.VITE_CLOUDINARY_API_SECRET || "TV66_8KL6v7LIpi02ILs_o3qn0M"
